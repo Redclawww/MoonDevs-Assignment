@@ -4,7 +4,6 @@ import useAuthSession from '../hooks/useAuthSession';
 import { useAppDispatch } from '@/redux/store';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
-import { useEffect, useState } from 'react';
 
 type Inputs = {
   username: string

@@ -5,7 +5,7 @@ import {users} from '@/global';
 // Dummy user data for demonstration purposes
 
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const authHeader = req.headers.get('Authorization');
 
   if (!authHeader) {
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json(userData.username);
+    return NextResponse.json({username});
   } catch (error) {
     console.error('Error verifying token:', error);
     return NextResponse.json({ message: 'Invalid token' }, { status: 401 });

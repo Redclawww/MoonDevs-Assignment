@@ -18,9 +18,11 @@ const useAuthSession = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
+            method: 'POST'
           });
           const userData = await response.json();
           console.log(userData);
+          
           
           dispatch(setUser(userData));
         } catch (error) {
