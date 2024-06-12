@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
-
+import {users} from '@/global';
 // Dummy user data for demonstration purposes
-const users = [
-  { username: 'user1', name: 'User 1' },
-  { username: 'user2', name: 'User 2' },
-];
+
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get('Authorization');
@@ -27,7 +24,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
-    return NextResponse.json(userData);
+    return NextResponse.json(userData.username);
   } catch (error) {
     console.error('Error verifying token:', error);
     return NextResponse.json({ message: 'Invalid token' }, { status: 401 });

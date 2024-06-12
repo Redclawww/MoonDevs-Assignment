@@ -14,9 +14,6 @@ type Inputs = {
 const HomePage = () => {
   const dispatch = useAppDispatch();
   const { user, logoutUser } = useAuthSession();
-  if (user) {
-    console.log('User:', user.username);
-  }
   const { toast } = useToast()
  
   const {
