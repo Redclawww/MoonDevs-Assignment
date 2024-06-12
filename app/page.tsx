@@ -1,27 +1,39 @@
 'use client';
-
-import { useState } from 'react';
 import { setToken,setUser } from '@/redux/auth/auth.slice';
 import useAuthSession from '../hooks/useAuthSession';
 import { useAppDispatch } from '@/redux/store';
+import { useForm, SubmitHandler } from "react-hook-form"
+import { useToast } from "@/components/ui/use-toast"
+
+
+type Inputs = {
+  username: string
+  password: string
+}
 
 const HomePage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const dispatch = useAppDispatch();
   const {user,logoutUser} = useAuthSession();
   if (user) {
     console.log('User:', user.username);
   }
+  const { toast } = useToast()
 
-  const handleLogin = async () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>()
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const {username, password} = data;  
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username,password }),
       });
       
       if (response.ok) {
@@ -32,12 +44,15 @@ const HomePage = () => {
         
       } else {
         const error = await response.json();
-        console.error('Login error:', error.message);
+        toast({
+          title: error.message,
+          description: "Please enter the correct username and password",
+        })
       }
     } catch (error) {
       console.error('Network error:', error);
     }
-  };
+  } 
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
@@ -49,27 +64,30 @@ const HomePage = () => {
           </div>
         ) : (
           <div>
+            <form onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-2xl font-bold text-center">Login</h2>
             <input
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              defaultValue="test" {...register("username", { required: true })}
               placeholder="Username"
               className="w-full px-4 py-2 mt-4 border rounded-md text-black"
             />
+            {errors.password && <span className='text-red-500'>This field is required</span>}
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", { required: true })} 
               placeholder="Password"
               className="w-full px-4 py-2 mt-4 border rounded-md text-black"
             />
-            <button
+            {errors.password && <span className='text-red-500'>This field is required</span>}
+            {/* <button
               onClick={handleLogin}
               className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md"
             >
               Login
-            </button>
+            </button> */}
+            <input type="submit"  className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md" />
+            </form>
           </div>
         )}
         <div className="mt-6 p-4 border rounded-md text-black bg-gray-50">
