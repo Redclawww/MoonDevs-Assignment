@@ -4,7 +4,7 @@ import useAuthSession from '../hooks/useAuthSession';
 import { useAppDispatch } from '@/redux/store';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useToast } from "@/components/ui/use-toast"
-
+import { useEffect, useState } from 'react';
 
 type Inputs = {
   username: string
@@ -13,12 +13,12 @@ type Inputs = {
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
-  const {user,logoutUser} = useAuthSession();
+  const { user, logoutUser } = useAuthSession();
   if (user) {
     console.log('User:', user.username);
   }
   const { toast } = useToast()
-
+ 
   const {
     register,
     handleSubmit,
@@ -41,6 +41,11 @@ const HomePage = () => {
         localStorage.setItem('token', token);
         dispatch(setToken(token));
         dispatch(setUser(user));
+        toast({
+          title: 'Logged in successfully',
+          description: "",
+          variant: "default"
+        })
         
       } else {
         const error = await response.json();
@@ -50,7 +55,11 @@ const HomePage = () => {
         })
       }
     } catch (error) {
-      console.error('Network error:', error);
+      toast({
+        title: 'Network error:',
+        description: "Please check your internet connection and try again.",
+      })
+      
     }
   } 
 
@@ -80,13 +89,7 @@ const HomePage = () => {
               className="w-full px-4 py-2 mt-4 border rounded-md text-black"
             />
             {errors.password && <span className='text-red-500'>This field is required</span>}
-            {/* <button
-              onClick={handleLogin}
-              className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md"
-            >
-              Login
-            </button> */}
-            <input type="submit"  className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md" />
+            <input type="submit" value="Login" className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md" />
             </form>
           </div>
         )}
@@ -96,7 +99,7 @@ const HomePage = () => {
             <code>
               {`const { user } = useAuthSession();
 if (user) {
-  console.log('User:', user.username);
+console.log('User:', user.username);
 }`}
             </code>
           </pre>

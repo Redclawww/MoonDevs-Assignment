@@ -7,17 +7,20 @@ This assignment involves setting up a simple username/password authentication sy
 ## Created Funcationality
 
 1. **Implement the `useAuthSession` Hook**:
-
    - In `hooks/useAuthSession.ts`, create a custom hook that manages the user's authentication session.
    - The hook should handle checking if a user is authenticated and fetching user data.
 
 2. **Create and Complete the API Endpoints**:
 
-   - create the required apis
+   - Created the required User and Login Endpoint
 
 3. **Bearer Token Authentication**:
-   - Implement bearer token authentication in your API endpoints.
-   - Ensure that API requests are secured and only accessible to authenticated users.
+   - Implemented bearer token authentication in your API endpoints.
+   - Ensured that API requests are secured and only accessible to authenticated users.
+
+4. **Added Proper Form Validation using React-hook-form**
+
+5. **Added toast UI component from shadcn for Erros and Successdul Logins**
 
 ## Example Usage of useAuthSession Hook
 
