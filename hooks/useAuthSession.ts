@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast"
 const useAuthSession = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state: RootState) => state.auth.user);
+  const token = useAppSelector((state: RootState) => state.auth.token);
   const { toast } = useToast()
   
   useEffect(() => {
@@ -33,7 +34,7 @@ const useAuthSession = () => {
       }
     };
     fetchUserData();
-  }, [dispatch,toast]);
+  }, [token]);
 
   const logoutUser = async() => {
     dispatch(clearAuth());
