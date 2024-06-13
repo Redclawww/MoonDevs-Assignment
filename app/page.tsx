@@ -42,7 +42,6 @@ const HomePage = () => {
           description: "",
           variant: "default"
         })
-        
       } else {
         const error = await response.json();
         toast({
@@ -55,7 +54,6 @@ const HomePage = () => {
         title: 'Network error:',
         description: "Please check your internet connection and try again.",
       })
-      
     }
   } 
 
@@ -71,20 +69,44 @@ const HomePage = () => {
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
             <h2 className="text-2xl font-bold text-center">Login</h2>
+
+            {/* Input Validation */}
             <input
               type="text"
-              defaultValue="test" {...register("username", { required: true })}
+              defaultValue="test" {...register("username", { required: true,minLength: {
+                value: 3,
+                message: "Username must be at least 3 characters long"
+              },
+              maxLength: {
+                value: 20,
+                message: "Username must not exceed 20 characters"
+              },
+              pattern: {
+                value: /^[a-zA-Z0-9_]+$/,
+                message: "Username can only contain letters, numbers, and underscores"
+              } })}
               placeholder="Username"
               className="w-full px-4 py-2 mt-4 border rounded-md text-black"
             />
-            {errors.password && <span className='text-red-500'>This field is required</span>}
+            {errors.username && <span className='text-red-500'>{errors.username.message}</span>}
+
+            {/* Password Validation */}
             <input
               type="password"
-              {...register("password", { required: true })} 
+              {...register("password", { required: true , minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters long"
+              },
+              pattern: {
+                value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message: "Password must include uppercase, lowercase, number, and special character"
+              },
+              validate: value => value !== "password" || "Password cannot be 'password'"
+            })} 
               placeholder="Password"
               className="w-full px-4 py-2 mt-4 border rounded-md text-black"
             />
-            {errors.password && <span className='text-red-500'>This field is required</span>}
+            {errors.password && <span className='text-red-500'>{errors.password.message}</span>}
             <input type="submit" value="Login" className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md" />
             </form>
           </div>

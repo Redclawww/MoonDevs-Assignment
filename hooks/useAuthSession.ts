@@ -21,9 +21,6 @@ const useAuthSession = () => {
             method: 'POST'
           });
           const userData = await response.json();
-          console.log(userData);
-          
-          
           dispatch(setUser(userData));
         } catch (error) {
           toast({
